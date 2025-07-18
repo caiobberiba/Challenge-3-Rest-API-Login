@@ -156,4 +156,59 @@ router.get('/usernames', (req, res) => {
   res.json({ usernames });
 });
 
+/**
+ * @swagger
+ * /auth/reset-password:
+ *   patch:
+ *     summary: Reseta a senha de um usuário bloqueado
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - username
+ *               - cpf
+ *               - newPassword
+ *             properties:
+ *               username:
+ *                 type: string
+ *               cpf:
+ *                 type: string
+ *               newPassword:
+ *                 type: string
+ *     responses:
+ *       200:
+ *         description: Senha resetada com sucesso
+ *       400:
+ *         description: Dados inválidos ou usuário não encontrado
+ *       403:
+ *         description: Usuário não está bloqueado
+ */
+router.patch('/reset-password', (req, res) => {
+  const { username, cpf, newPassword } = req.body;
+  
+  if (!username || !cpf || !newPassword) {
+    return res.status(400).json({ error: 'Dados inválidos. Username, CPF e nova senha são obrigatórios.' });
+  }
+  
+  const user = users.find(u => u.username === username && u.cpf === cpf);
+  if (!user) {
+    return res.status(400).json({ error: 'Usuário não encontrado ou CPF inválido.' });
+  }
+  
+  if (!loginAttempts[username] || !loginAttempts[username].blocked) {
+    return res.status(403).json({ error: 'Usuário não está bloqueado. Apenas usuários bloqueados podem resetar a senha.' });
+  }
+  
+  // Atualizar a senha
+  user.password = newPassword;
+  
+  // Desbloquear o usuário
+  loginAttempts[username] = { count: 0, blocked: false };
+  
+  res.json({ message: 'Senha resetada com sucesso. Usuário desbloqueado.' });
+});
+
 module.exports = router; 
