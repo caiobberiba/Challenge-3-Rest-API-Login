@@ -7,7 +7,8 @@ The API must have the following functionalities:
 - Perform successful login;
 - Return an error if the username and password are invalid;
 - Block the password after 3 invalid attempts;
-- Allow password recovery under.
+- Allow password recovery.
+- User can "RESET" the password blocked 
 
 Context:
 - This API will be used only for software testing studies and will not go to production.
@@ -24,4 +25,8 @@ Rules:
 - For the password recovery the user must send the username and the unique id, then it will return the password 
 - Expose a URL so we can access the Swagger documentation of this API.
 - If the CPF has been already added, send and error explaining that the CPF MUST BE UNIQUE
+- After failing login 3 times the user gets blocked until changing the password 
+- The user must send Username, CPF and the new password. 
+- The new Passwrod will be valid ONLY if the Username and CPF are valid in the user list
+- The new password will update the old password in the list of users
 - Create this new project here: F:\projetos
