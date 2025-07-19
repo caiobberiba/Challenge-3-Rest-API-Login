@@ -19,15 +19,15 @@ const loginAttempts = {};
  *             required:
  *               - username
  *               - password
- *               - cpf
+ *               - email
  *             properties:
  *               username:
  *                 type: string
  *               password:
  *                 type: string
- *               cpf:
+ *               email:
  *                 type: string
- *                 description: CPF com exatamente 11 números
+ *                 description: Email válido
  *     responses:
  *       201:
  *         description: Usuário criado com sucesso
@@ -35,17 +35,24 @@ const loginAttempts = {};
  *         description: Dados inválidos ou usuário já existe
  */
 router.post('/register', (req, res) => {
-  const { username, password, cpf } = req.body;
-  if (!username || !password || !cpf || !/^\d{11}$/.test(cpf)) {
-    return res.status(400).json({ error: 'Dados inválidos. CPF deve ter exatamente 11 números.' });
+  const { username, password, email } = req.body;
+  
+  // Validação de email
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+  if (!username || !password || !email || !emailRegex.test(email)) {
+    return res.status(400).json({ error: 'Dados inválidos. Email deve ter formato válido.' });
   }
+  
   if (users.find(u => u.username === username)) {
     return res.status(400).json({ error: 'Usuário já existe.' });
   }
-  if (users.find(u => u.cpf === cpf)) {
-    return res.status(400).json({ error: 'CPF já cadastrado. O CPF deve ser único.' });
+  
+  if (users.find(u => u.email === email)) {
+    return res.status(400).json({ error: 'Email já cadastrado. O email deve ser único.' });
   }
-  users.push({ username, password, cpf });
+  
+  users.push({ username, password, email });
   res.status(201).json({ message: 'Usuário criado com sucesso.' });
 });
 
@@ -112,11 +119,11 @@ router.post('/login', (req, res) => {
  *             type: object
  *             required:
  *               - username
- *               - cpf
+ *               - email
  *             properties:
  *               username:
  *                 type: string
- *               cpf:
+ *               email:
  *                 type: string
  *     responses:
  *       200:
@@ -125,8 +132,8 @@ router.post('/login', (req, res) => {
  *         description: Dados inválidos
  */
 router.post('/recover', (req, res) => {
-  const { username, cpf } = req.body;
-  const user = users.find(u => u.username === username && u.cpf === cpf);
+  const { username, email } = req.body;
+  const user = users.find(u => u.username === username && u.email === email);
   if (!user) {
     return res.status(400).json({ error: 'Dados inválidos.' });
   }
@@ -169,12 +176,12 @@ router.get('/usernames', (req, res) => {
  *             type: object
  *             required:
  *               - username
- *               - cpf
+ *               - email
  *               - newPassword
  *             properties:
  *               username:
  *                 type: string
- *               cpf:
+ *               email:
  *                 type: string
  *               newPassword:
  *                 type: string
@@ -187,15 +194,15 @@ router.get('/usernames', (req, res) => {
  *         description: Usuário não está bloqueado
  */
 router.patch('/reset-password', (req, res) => {
-  const { username, cpf, newPassword } = req.body;
+  const { username, email, newPassword } = req.body;
   
-  if (!username || !cpf || !newPassword) {
-    return res.status(400).json({ error: 'Dados inválidos. Username, CPF e nova senha são obrigatórios.' });
+  if (!username || !email || !newPassword) {
+    return res.status(400).json({ error: 'Dados inválidos. Username, email e nova senha são obrigatórios.' });
   }
   
-  const user = users.find(u => u.username === username && u.cpf === cpf);
+  const user = users.find(u => u.username === username && u.email === email);
   if (!user) {
-    return res.status(400).json({ error: 'Usuário não encontrado ou CPF inválido.' });
+    return res.status(400).json({ error: 'Usuário não encontrado ou email inválido.' });
   }
   
   if (!loginAttempts[username] || !loginAttempts[username].blocked) {

@@ -1,6 +1,6 @@
 # API de Login (Exemplo para Estudos)
 
-Esta API foi criada para fins de estudo e simula um sistema de autenticação simples, sem uso de banco de dados (tudo em memória). Permite criar usuários, realizar login, bloquear após 3 tentativas inválidas, recuperar senha via CPF e resetar senha de usuários bloqueados.
+Esta API foi criada para fins de estudo e simula um sistema de autenticação simples, sem uso de banco de dados (tudo em memória). Permite criar usuários, realizar login, bloquear após 3 tentativas inválidas, recuperar senha via email e resetar senha de usuários bloqueados.
 
 ## Tecnologias Utilizadas
 - Node.js
@@ -35,11 +35,11 @@ Acesse a documentação interativa em: [http://localhost:3000/api-docs](http://l
 {
   "username": "usuario",
   "password": "senha",
-  "cpf": "12345678901"
+  "email": "usuario@exemplo.com"
 }
 ```
-- O CPF deve ter exatamente 11 números.
-- O CPF deve ser único (não pode ser duplicado).
+- O email deve ter formato válido.
+- O email deve ser único (não pode ser duplicado).
 - O username deve ser único.
 
 ### Login
@@ -61,7 +61,7 @@ Acesse a documentação interativa em: [http://localhost:3000/api-docs](http://l
 ```json
 {
   "username": "usuario",
-  "cpf": "12345678901"
+  "email": "usuario@exemplo.com"
 }
 ```
 - Retorna a senha se os dados estiverem corretos.
@@ -71,16 +71,16 @@ Acesse a documentação interativa em: [http://localhost:3000/api-docs](http://l
 ```json
 {
   "username": "usuario",
-  "cpf": "12345678901",
+  "email": "usuario@exemplo.com",
   "newPassword": "novaSenha123"
 }
 ```
 - Apenas usuários bloqueados podem resetar a senha.
-- Valida username e CPF antes de permitir o reset.
+- Valida username e email antes de permitir o reset.
 - Após o reset, o usuário é automaticamente desbloqueado.
 
 ## Observações
 - Todos os dados são armazenados apenas em memória (serão perdidos ao reiniciar o servidor).
 - Não utilize esta API em produção.
-- O CPF é validado como único para evitar duplicatas.
+- O email é validado como único para evitar duplicatas.
 - Usuários bloqueados precisam resetar a senha para voltar a acessar o sistema. 
