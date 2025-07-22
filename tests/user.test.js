@@ -37,7 +37,7 @@ describe("User", () => {
     
 
     describe("GET /auth/usernames", () => {
-        it.only("Must return 200 and user found successfully", async () => {
+        it("Must return 200 and user found successfully", async () => {
             const response = await request(process.env.BASE_URL)
                 .get('/auth/usernames')
                 .set('Content-type', 'application/json')
