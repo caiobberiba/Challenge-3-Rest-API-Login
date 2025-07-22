@@ -59,4 +59,32 @@ describe("User", () => {
             expect(response.body).to.have.property("error", "User not found.");
         })
     })
+
+    describe("GET /auth/recover", () => {
+        it("Must return 200 and user recovered successfully", async () => {
+            const response = await request(process.env.BASE_URL)
+                .post('/auth/recover')
+                .set('Content-type', 'application/json')
+                .send({
+                    username: 'shanks',
+                    email: 'shanks@teste.com'
+                });
+
+            expect(response.status).to.be.equal(200);
+            expect(response.body.password).to.be.equal("123456");
+        })
+
+        it("Must return 400 and user not found", async () => {
+            const response = await request(process.env.BASE_URL)
+                .post('/auth/recover')
+                .set('Content-type', 'application/json')
+                .send({
+                    username: 'shanks123',
+                    email: 'shanks123@teste.com'
+                });
+
+            expect(response.status).to.be.equal(400);
+            expect(response.body).to.have.property("error", "Invalid data.");
+        })
+    })
 })
