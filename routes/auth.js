@@ -218,4 +218,37 @@ router.patch('/reset-password', (req, res) => {
   res.json({ message: 'Senha resetada com sucesso. Usuário desbloqueado.' });
 });
 
+/**
+ * @swagger
+ * /auth/delete/{username}:
+ *   delete:
+ *     summary: Deleta um usuário pelo username
+ *     parameters:
+ *       - in: path
+ *         name: username
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Username do usuário a ser deletado
+ *     responses:
+ *       200:
+ *         description: Usuário deletado com sucesso
+ *       400:
+ *         description: Usuário não encontrado
+ */
+router.delete('/delete/:username', (req, res) => {
+  const { username } = req.params;
+  if (!username) {
+    return res.status(400).json({ error: 'Username é obrigatório.' });
+  }
+  const index = users.findIndex(u => u.username === username);
+  if (index === -1) {
+    return res.status(400).json({ error: 'Usuário não encontrado.' });
+  }
+  users.splice(index, 1);
+  // Remove tentativas de login também
+  delete loginAttempts[username];
+  res.json({ message: 'Usuário deletado com sucesso.' });
+});
+
 module.exports = router; 
