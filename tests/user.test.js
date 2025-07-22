@@ -35,6 +35,19 @@ describe("User", () => {
         })
     })
     
+
+    describe("GET /auth/usernames", () => {
+        it.only("Must return 200 and user found successfully", async () => {
+            const response = await request(process.env.BASE_URL)
+                .get('/auth/usernames')
+                .set('Content-type', 'application/json')
+            
+            expect(response.status).to.be.equal(200);
+            expect(response.body.usernames).to.be.an("array");
+            expect(response.body.usernames).to.have.length.of.at.least(1);
+        })
+    })
+
     describe("DELETE /auth/delete/{username}", () => {
         it.skip("Must return 200 and user deleted successfully", async () => {
             const response = await request(process.env.BASE_URL)
@@ -86,5 +99,18 @@ describe("User", () => {
             expect(response.status).to.be.equal(400);
             expect(response.body).to.have.property("error", "Invalid data.");
         })
+
+        it("Must return 400 and email is incorrect", async () => {
+            const response = await request(process.env.BASE_URL)
+                .post('/auth/recover')
+                .set('Content-type', 'application/json')
+                .send({
+                    username: 'shanks',
+                    email: 'shanks123@teste.com'
+                });
+
+            expect(response.status).to.be.equal(400);
+            expect(response.body).to.have.property("error", "Invalid data.");
+        })  
     })
 })
