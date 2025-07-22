@@ -1,6 +1,6 @@
-# Exemplos de Teste - API com EMAIL
+# Test Examples - API with EMAIL
 
-## 1. Registrar Usuário
+## 1. Register User
 ```bash
 curl -X POST http://localhost:3000/auth/register \
   -H "Content-Type: application/json" \
@@ -21,7 +21,7 @@ curl -X POST http://localhost:3000/auth/login \
   }'
 ```
 
-## 3. Recuperar Senha
+## 3. Recover Password
 ```bash
 curl -X POST http://localhost:3000/auth/recover \
   -H "Content-Type: application/json" \
@@ -31,12 +31,12 @@ curl -X POST http://localhost:3000/auth/recover \
   }'
 ```
 
-## 4. Listar Usernames
+## 4. List Usernames
 ```bash
 curl -X GET http://localhost:3000/auth/usernames
 ```
 
-## 5. Resetar Senha (após bloqueio)
+## 5. Reset Password (after lockout)
 ```bash
 curl -X PATCH http://localhost:3000/auth/reset-password \
   -H "Content-Type: application/json" \
@@ -47,15 +47,15 @@ curl -X PATCH http://localhost:3000/auth/reset-password \
   }'
 ```
 
-## Mudanças Implementadas:
+## Implemented Changes:
 
-✅ **CPF → EMAIL**: Todas as referências de CPF foram substituídas por EMAIL  
-✅ **Validação**: Email com formato válido (regex: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`)  
-✅ **Unicidade**: Email deve ser único no sistema  
-✅ **Endpoints atualizados**:
-- `POST /auth/register` - agora requer email
-- `POST /auth/recover` - agora requer email  
-- `PATCH /auth/reset-password` - agora requer email
+✅ **CPF → EMAIL**: All references to CPF have been replaced by EMAIL  
+✅ **Validation**: Email with valid format (regex: `/^[^\s@]+@[^\s@]+\.[^\s@]+$/`)  
+✅ **Uniqueness**: Email must be unique in the system  
+✅ **Updated endpoints**:
+- `POST /auth/register` - now requires email
+- `POST /auth/recover` - now requires email  
+- `PATCH /auth/reset-password` - now requires email
 
-## Documentação Swagger:
-Acesse: http://localhost:3000/api-docs 
+## Swagger Documentation:
+Access: http://localhost:3000/api-docs 
