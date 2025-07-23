@@ -104,5 +104,6 @@ Access the interactive documentation at: [http://localhost:3000/api-docs](http:/
 
 ## Authors
 - [Bruna Ferreira]()
+- [Caio Bêribá](https://github.com/caiobberiba)
 - [Carlos Berenguer](https://github.com/CarlosBerenguer)
 - [Márcio Corrêa](https://github.com/marciorc)
