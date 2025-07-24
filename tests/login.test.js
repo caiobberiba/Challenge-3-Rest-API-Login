@@ -30,5 +30,25 @@ describe("Login", () => {
             expect(response.status).to.be.equal(400)
             expect(response.body).to.have.property("error", 'Invalid username or password.')
         })
+
+        it("Must block user after 3 failed login attempts", async () => {
+            const username = 'shanks';
+            const wrongPassword = 'wrongpass';
+
+            for (let i = 0; i < 3; i++) {
+                await request(process.env.BASE_URL)
+                    .post('/auth/login')
+                    .set('Content-type', 'application/json')
+                    .send({ username, password: wrongPassword });
+            }
+
+            const response = await request(process.env.BASE_URL)
+                .post('/auth/login')
+                .set('Content-type', 'application/json')
+                .send({ username, password: wrongPassword });
+
+            expect(response.status).to.be.equal(403);
+            expect(response.body).to.have.property("error", 'Account blocked due to too many attempts.');
+        });
     })
 })
