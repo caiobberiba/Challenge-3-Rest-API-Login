@@ -22,13 +22,52 @@ This API was created for study purposes and simulates a simple authentication sy
 - Express
 - Mocha & Supertest (Automated Testing)
 - Swagger (Documentation)
+- MaterializeCSS (Frontend styling)
+- BFF (Backend for Frontend) pattern
+
+## Web Application Features
+
+The complete web application includes:
+
+- **Home Page (Login)**: Clean login form with username and password fields
+- **Register Page**: User registration with username, email, and password
+- **Password Recovery**: Recover password using username and email
+- **Password Reset**: Reset password for blocked accounts
+- **Responsive Design**: Modern, mobile-friendly interface using MaterializeCSS
+- **Error Handling**: Proper error messages for all scenarios
+- **Account Blocking**: Visual feedback when accounts are blocked after 3 failed attempts
+- **Form Validation**: Client-side validation for all forms
 
 ## How to Run the Project
+
+### Option 1: Run the complete web application (Recommended)
+
+1. Install the dependencies for both API and BFF:
+   ```bash
+   npm install
+   cd bff && npm install
+   ```
+
+2. Start the API server (in one terminal):
+   ```bash
+   npx nodemon index.js
+   ```
+
+3. Start the BFF server (in another terminal):
+   ```bash
+   cd bff
+   npx nodemon index.js
+   ```
+
+4. Access the web application at: http://localhost:3001
+
+### Option 2: Run only the API
 
 1. Install the dependencies:
    ```bash
    npm install
    ```
+
 2. Start the server:
    ```bash
    npx nodemon index.js
@@ -38,7 +77,7 @@ This API was created for study purposes and simulates a simple authentication sy
    node index.js
    ```
 
-The server will be available at: http://localhost:3000
+The API server will be available at: http://localhost:3000
 
 ## Swagger Documentation
 Access the interactive documentation at: http://localhost:3000/api-docs
