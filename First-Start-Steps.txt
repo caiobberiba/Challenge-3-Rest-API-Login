@@ -1,0 +1,5 @@
+- npm init -y
+- npm install --save-dev cypress
+
+Abrir o cypress
+- npx cypress open

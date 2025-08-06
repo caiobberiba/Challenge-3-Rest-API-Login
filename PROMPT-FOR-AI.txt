@@ -30,3 +30,21 @@ Rules:
 - The new Passwrod will be valid ONLY if the Username and CPF are valid in the user list
 - The new password will update the old password in the list of users
 - Create this new project here: F:\projetos
+
+-------------------------------------- -------------------------------------------------
+Web application
+
+objetive
+- Install and prepare the environment (files, folders, etc) so we can create automation tests for the application using cypress 
+- run cypress ofr the first time 
+
+Context
+- We've just implemented the BFF consuming the API
+- The automated tests for the API are already done
+- We need to implement tests End-to-End using cypress
+
+Rules
+- Create a new folder named "cypress"
+- Install the last version of cypress, npm and every other library needed to start e2e automated testing
+- url to open the application: http://localhost:3001
+- Create a new package.json inside the cypress folder 
