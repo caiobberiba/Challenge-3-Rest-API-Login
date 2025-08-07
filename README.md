@@ -59,7 +59,12 @@ The complete web application includes:
    npx nodemon index.js
    ```
 
-4. Access the web application at: http://localhost:3001
+4. Start the API and BFF server together (in the same terminal):
+   ```bash
+   npm run start:application
+   ```
+
+5. Access the web application at: http://localhost:3001
 
 ### Option 2: Run only the API
 
