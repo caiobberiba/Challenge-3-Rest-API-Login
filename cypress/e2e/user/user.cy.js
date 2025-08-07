@@ -31,13 +31,21 @@ describe("User", () => {
             cy.get("#recoverPassword").click();
             cy.get("#successMessage").should("contain", "Password recovered successfully!");
         });
-        it('should give the error message "User already exists."', () => {
+        it('should give the error message "Password recovery failed. Please check your credentials."', () => {
             cy.visit("http://localhost:3001");
             cy.get("#forgotPassword").click();
             cy.get("label[for='username']").type("shanks123");
             cy.get("label[for'email']").type("shanks123@teste.com")
             cy.get("#recoverPassword").click();
             cy.get("#errorMessage").should("contain", "Password recovery failed. Please check your credentials.");
+        });
+        it('should give the error message "Please enter a valid email address."', () => {
+            cy.visit("http://localhost:3001");
+            cy.get("#forgotPassword").click();
+            cy.get("label[for='username']").type("shanks123");
+            cy.get("label[for'email']").type("shanks123@@teste.com")
+            cy.get("#recoverPassword").click();
+            cy.get("#errorMessage").should("contain", "Please enter a valid email address.");
         });
     });
 });
