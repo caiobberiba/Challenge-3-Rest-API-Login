@@ -1,0 +1,23 @@
+{
+  "name": "cypress-e2e-tests",
+  "version": "1.0.0",
+  "description": "End-to-End tests using Cypress for login-api application",
+  "main": "index.js",
+  "scripts": {
+    "cypress:open": "cypress open",
+    "cypress:run": "cypress run",
+    "cypress:run:headless": "cypress run --headless",
+    "test:e2e": "cypress run --spec 'cypress/e2e/**/*.cy.js'"
+  },
+  "keywords": [
+    "cypress",
+    "e2e",
+    "testing",
+    "automation"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "cypress": "^13.6.0"
+  }
+} 
