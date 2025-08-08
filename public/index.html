@@ -143,10 +143,15 @@
                 const data = await response.json();
                 
                 if (response.ok) {
-                    showSuccessMessage('Login successful! Welcome back.');
+                    showSuccessMessage('Login successful! Redirecting to users page...');
                     // Clear form
                     document.getElementById('loginForm').reset();
                     M.updateTextFields();
+                    
+                    // Redirect to users page after a short delay
+                    setTimeout(() => {
+                        window.location.href = '/users';
+                    }, 1500);
                 } else {
                     if (data.error && data.error.includes('blocked')) {
                         showBlockedMessage('Account blocked due to multiple failed attempts. Please reset your password.');

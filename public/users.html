@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Users List - Authentication System</title>
+    <!-- MaterializeCSS CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <!-- Material Icons -->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        body {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px 0;
+        }
+        .users-container {
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            padding: 40px;
+            margin: 0 auto;
+            max-width: 800px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header i {
+            font-size: 3rem;
+            color: #667eea;
+        }
+        .user-card {
+            border-radius: 8px;
+            padding: 15px;
+            margin: 10px 0;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .user-card:nth-child(odd) {
+            background-color: #f8f9fa;
+        }
+        .user-card:nth-child(even) {
+            background-color: #ffffff;
+        }
+        .user-info {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .user-details {
+            display: flex;
+            align-items: center;
+        }
+        .user-details i {
+            margin-right: 10px;
+            color: #667eea;
+        }
+        .user-name {
+            font-weight: bold;
+            color: #333;
+            margin-right: 20px;
+        }
+        .user-email {
+            color: #666;
+        }
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #666;
+        }
+        .empty-state i {
+            font-size: 4rem;
+            color: #ccc;
+            margin-bottom: 20px;
+        }
+        .btn-logout {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+        }
+        .refresh-btn {
+            margin-bottom: 20px;
+        }
+        .error-message {
+            background-color: #ffebee;
+            color: #c62828;
+            padding: 10px;
+            border-radius: 4px;
+            margin: 10px 0;
+            display: none;
+        }
+        .loading {
+            text-align: center;
+            padding: 40px;
+        }
+    </style>
+</head>
+<body>
+    <a href="/" class="btn-floating btn-large waves-effect waves-light red btn-logout tooltipped" data-position="left" data-tooltip="Logout">
+        <i class="material-icons">exit_to_app</i>
+    </a>
+
+    <div class="users-container">
+        <div class="header">
+            <i class="material-icons">group</i>
+            <h4>Registered Users</h4>
+            <p class="grey-text">List of all users in the system</p>
+        </div>
+
+        <div class="row">
+            <div class="col s12">
+                <button id="refreshBtn" class="btn waves-effect waves-light refresh-btn">
+                    <i class="material-icons left">refresh</i>
+                    Refresh List
+                </button>
+            </div>
+        </div>
+
+        <div id="errorMessage" class="error-message"></div>
+        
+        <div id="loadingDiv" class="loading">
+            <div class="preloader-wrapper small active">
+                <div class="spinner-layer spinner-blue-only">
+                    <div class="circle-clipper left">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="gap-patch">
+                        <div class="circle"></div>
+                    </div>
+                    <div class="circle-clipper right">
+                        <div class="circle"></div>
+                    </div>
+                </div>
+            </div>
+            <p>Loading users...</p>
+        </div>
+
+        <div id="usersContainer">
+            <!-- Users will be loaded here -->
+        </div>
+
+        <div id="emptyState" class="empty-state" style="display: none;">
+            <i class="material-icons">person_outline</i>
+            <h5>No users found</h5>
+            <p>No users have been registered yet.</p>
+            <a href="/register" class="btn waves-effect waves-light">
+                <i class="material-icons left">person_add</i>
+                Register First User
+            </a>
+        </div>
+    </div>
+
+    <!-- MaterializeCSS JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <script>
+        // Initialize Materialize components
+        document.addEventListener('DOMContentLoaded', function() {
+            M.Tooltip.init(document.querySelectorAll('.tooltipped'));
+            loadUsers();
+        });
+
+        // Load users from API
+        async function loadUsers() {
+            const loadingDiv = document.getElementById('loadingDiv');
+            const usersContainer = document.getElementById('usersContainer');
+            const emptyState = document.getElementById('emptyState');
+            const errorMessage = document.getElementById('errorMessage');
+
+            // Show loading
+            loadingDiv.style.display = 'block';
+            usersContainer.innerHTML = '';
+            emptyState.style.display = 'none';
+            errorMessage.style.display = 'none';
+
+            try {
+                const response = await fetch('/bff/usernames');
+                const data = await response.json();
+
+                // Hide loading
+                loadingDiv.style.display = 'none';
+
+                if (response.ok) {
+                    if (data.usernames && data.usernames.length > 0) {
+                        displayUsers(data.usernames);
+                    } else {
+                        emptyState.style.display = 'block';
+                    }
+                } else {
+                    showErrorMessage(data.error || 'Failed to load users');
+                }
+            } catch (error) {
+                loadingDiv.style.display = 'none';
+                showErrorMessage('Network error. Please try again.');
+            }
+        }
+
+        // Display users in the container
+        function displayUsers(usernames) {
+            const usersContainer = document.getElementById('usersContainer');
+            
+            usersContainer.innerHTML = usernames.map((username, index) => `
+                <div class="user-card">
+                    <div class="user-info">
+                        <div class="user-details">
+                            <i class="material-icons">person</i>
+                            <span class="user-name">${escapeHtml(username)}</span>
+                        </div>
+                        <div class="user-meta">
+                            <span class="grey-text">User #${index + 1}</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Refresh button handler
+        document.getElementById('refreshBtn').addEventListener('click', function() {
+            loadUsers();
+        });
+
+        // Error message display
+        function showErrorMessage(message) {
+            const errorDiv = document.getElementById('errorMessage');
+            errorDiv.textContent = message;
+            errorDiv.style.display = 'block';
+        }
+
+        // Escape HTML to prevent XSS
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Auto-refresh every 30 seconds
+        setInterval(loadUsers, 30000);
+    </script>
+</body>
+</html>
