@@ -7,7 +7,8 @@
     "start": "node index.js",
     "dev:api": "nodemon index.js",
     "dev:bff": "cd bff && npx nodemon index.js",
-    "start:application": "concurrently \"npm run dev:api\" \"npm run dev:bff\""
+    "start:application": "concurrently \"npm run dev:api\" \"npm run dev:bff\"",
+    "cy:open:dev": "cd cypress && npm run cy:open:dev"
   },
   "keywords": [],
   "author": "",

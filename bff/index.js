@@ -81,6 +81,10 @@ app.get('/reset-password', (req, res) => {
   res.sendFile(path.join(__dirname, '../public/reset-password.html'));
 });
 
+app.get('/users', (req, res) => {
+  res.sendFile(path.join(__dirname, '../public/users.html'));
+});
+
 // Serve static files from the public directory (after BFF routes)
 app.use(express.static(path.join(__dirname, '../public')));
 

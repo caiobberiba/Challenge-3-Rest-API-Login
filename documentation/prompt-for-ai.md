@@ -48,3 +48,13 @@ Rules
 - Install the last version of cypress, npm and every other library needed to start e2e automated testing
 - url to open the application: http://localhost:3001
 - Create a new package.json inside the cypress folder 
+
+---------------------------------------------------------------------------------------------------
+Objetive
+- Create page where i can see the list of users cretead
+
+Context
+- As it is now, we can't se what users have been already created
+
+Rules
+- After login the page with the list of users is displayed
