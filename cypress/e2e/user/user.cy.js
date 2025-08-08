@@ -20,11 +20,11 @@ describe("User", () => {
             cy.recoverPasswordWithValidCredentials();
             cy.get("#successMessage").should("contain", "Password recovered successfully!");
         });
-        it('should give the error message "Password recovery failed. Please check your credentials."', () => {
+        it('should give the error message "Invalid data." when username is invalid', () => {
             cy.recoverPasswordWithInvalidUsername();
             cy.get("#errorMessage").should("contain", "Invalid data.");
         });
-        it('should give the error message "Please enter a valid email address."', () => {
+        it('should give the error message "Invalid data." when email is invalid', () => {
             cy.recoverPasswordWithInvalidEmail();
             cy.get("#errorMessage").should("contain", "Invalid data.");
         });
